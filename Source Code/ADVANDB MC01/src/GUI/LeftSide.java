@@ -29,8 +29,10 @@ public class LeftSide {
 	private String toBeCreated = new String(); 
 	private VBox buttonBox = new VBox();
 	private VBox left = new VBox();
+	private RightSide rightSide = new RightSide();
 	
-	public LeftSide() {
+	public LeftSide(RightSide rightSide) {
+		this.rightSide = rightSide;
 		QueryChoices.getItems().add("Empty");
 		QueryChoices.getSelectionModel().select(0);
 		QueryChoices.setMaxWidth(Double.MAX_VALUE);
@@ -55,7 +57,7 @@ public class LeftSide {
 		viewDB.setPadding(new Insets(5));
 		viewDB.setMaxWidth(Double.MAX_VALUE);
 		viewDB.setOnAction(e ->  {
-			//enter shit here
+			switchTablesBox();
 		});
 		
 		//QueryCreate button
@@ -134,7 +136,7 @@ public class LeftSide {
 	
 	public void OptimizeBox() {
 		Stage window = new Stage();
-		window.initModality(Modality.APPLICATION_MODAL); //Blocks access to other windows until this is closed
+		window.initModality(Modality.APPLICATION_MODAL); 
 		window.setTitle("OPTIMIZE");
 		window.setMinWidth(250);
 		window.setResizable(false);
@@ -150,6 +152,7 @@ public class LeftSide {
 		Button cancelButton = new Button("Cancel");
 		cancelButton.setOnAction(e -> window.close());
 		cancelButton.setMaxWidth(Double.MAX_VALUE);
+		
 		Button okButton = new Button("Ok");
 		okButton.setOnAction(e -> {
 				addNewOpt(OptimizeChoices.getValue());
@@ -168,6 +171,71 @@ public class LeftSide {
 		
 		VBox layout = new VBox(10);
 		layout.getChildren().addAll(label, OptimizeChoices, descScroll,  buttons);
+		layout.setPadding(new Insets(10,10,10,10));
+		
+		Scene scene = new Scene(layout);
+		window.setScene(scene);
+		window.showAndWait();
+	}
+	
+	public void switchTablesBox(){
+		Stage window = new Stage();
+		window.initModality(Modality.APPLICATION_MODAL);
+		window.setTitle("Choose Table To Display");
+		window.setMinWidth(250);
+		window.setResizable(false);
+		
+		
+		Button bookButton = new Button("Books");
+		bookButton.setMaxWidth(Double.MAX_VALUE);
+		bookButton.setOnAction(e -> {
+				rightSide.switchToBooks();
+				window.close();
+			});
+		bookButton.setMaxWidth(Double.MAX_VALUE);
+		
+		Button authorButton = new Button("Author");
+		authorButton.setMaxWidth(Double.MAX_VALUE);
+		authorButton.setOnAction(e -> {
+				rightSide.switchToAuthor();
+				window.close();
+			});
+		authorButton.setMaxWidth(Double.MAX_VALUE);
+		
+		Button loansButton = new Button("Book Loans");
+		loansButton.setMaxWidth(Double.MAX_VALUE);
+		loansButton.setOnAction(e -> {
+				rightSide.switchToLoans();
+				window.close();
+			});
+		loansButton.setMaxWidth(Double.MAX_VALUE);
+		
+		Button borrowButton = new Button("Borrower");
+		borrowButton.setMaxWidth(Double.MAX_VALUE);
+		borrowButton.setOnAction(e -> {
+				rightSide.switchToBorrow();
+				window.close();
+			});
+		borrowButton.setMaxWidth(Double.MAX_VALUE);
+		
+		Button libButton = new Button("Library Branch");
+		libButton.setMaxWidth(Double.MAX_VALUE);
+		libButton.setOnAction(e -> {
+				rightSide.switchToLibrary();
+				window.close();
+			});
+		libButton.setMaxWidth(Double.MAX_VALUE);
+		
+		Button pubButton = new Button("Publisher");
+		pubButton.setMaxWidth(Double.MAX_VALUE);
+		pubButton.setOnAction(e -> {
+				rightSide.switchToPublisher();
+				window.close();
+			});
+		pubButton.setMaxWidth(Double.MAX_VALUE);
+		
+		VBox layout = new VBox(10);
+		layout.getChildren().addAll(bookButton, authorButton, loansButton, borrowButton, libButton, pubButton);
 		layout.setPadding(new Insets(10,10,10,10));
 		
 		Scene scene = new Scene(layout);

@@ -13,8 +13,8 @@ public class Driver extends Application{
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		LeftSide left = new LeftSide();
 		RightSide right = new RightSide();
+		LeftSide left = new LeftSide(right);
 		StageMakerView view = new StageMakerView(primaryStage, left, right);
 	}
 }

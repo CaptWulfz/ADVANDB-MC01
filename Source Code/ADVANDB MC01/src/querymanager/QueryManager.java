@@ -8,10 +8,11 @@ public class QueryManager {
 		db = Database.getInstance();
 	}
 	
-	public void connect() {
-	
+	public String newQuery(){
+		
+		
+		
+		return null;
 	}
-	
-	
 
 }
