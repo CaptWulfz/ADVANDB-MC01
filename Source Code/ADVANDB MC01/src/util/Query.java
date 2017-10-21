@@ -17,7 +17,7 @@ public class Query {
 		return instance;
 	}
 	
-	public static ArrayList<ArrayList<?>> getRS(String query) throws SQLException{
+	public ArrayList<ArrayList<?>> getRS(String query) throws SQLException{
 		//result(0) = colLabels, result(1+) = rows
 		//colTypes must be compared against java.sql.Types
 		ArrayList<ArrayList<?>> result = new ArrayList<ArrayList<?>>();

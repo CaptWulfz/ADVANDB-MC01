@@ -25,7 +25,6 @@ public class Database {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		System.out.println("Connected");
 	}
 	
 	public static Database getInstance(){
