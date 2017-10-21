@@ -3,6 +3,7 @@ package util;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 
 public class Query {
@@ -16,12 +17,12 @@ public class Query {
 		return instance;
 	}
 	
-	public ArrayList<ArrayList<?>> getRS(String query) throws SQLException{
-		//result (0) = colLabels, result (1) = colTypes, result(2+) = rows
+	public static ArrayList<ArrayList<?>> getRS(String query) throws SQLException{
+		//result(0) = colLabels, result(1+) = rows
 		//colTypes must be compared against java.sql.Types
 		ArrayList<ArrayList<?>> result = new ArrayList<ArrayList<?>>();
 		ArrayList<String> colLabels = new ArrayList<String>();
-		ArrayList<Object> colTypes = new ArrayList<Object>();
+		ArrayList<Integer> colTypes = new ArrayList<Integer>();
 		
 		//get rs and rsmd
 		ResultSet rs = Database.getInstance().query(query);
@@ -32,12 +33,22 @@ public class Query {
 			colLabels.add(rsmd.getColumnLabel(i));
 		result.add(colLabels);
 		
-		//get column types
+		//get column types, do not add to result
 		for (int i = 1; i <= rsmd.getColumnCount(); i++)
 			colTypes.add(rsmd.getColumnType(i));
-		result.add(colTypes);
 		
-		
+		//get rows
+		while(rs.next()){
+			ArrayList<Object> row = new ArrayList<Object>();
+			for (int i = 1; i <= rsmd.getColumnCount(); i++) {
+				if (colTypes.get(i - 1) == Types.VARCHAR)
+					row.add(rs.getString(i));
+				else
+					row.add(rs.getInt(i));
+			}
+			result.add(row);
+		}
+		Database.getInstance().queryClose();
 		
 		return result;
 	}
