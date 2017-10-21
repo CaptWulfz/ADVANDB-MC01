@@ -1,11 +1,10 @@
-package querymanager;
+package util;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
 
 public class Database {
 	private final String directory = "jdbc:mysql://localhost:3306/booksdb";
