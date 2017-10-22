@@ -22,11 +22,16 @@ public class Query {
 		//colTypes must be compared against java.sql.Types
 		ArrayList<ArrayList<?>> result = new ArrayList<ArrayList<?>>();
 		ArrayList<String> colLabels = new ArrayList<String>();
+		ArrayList<Long> execTime = new ArrayList<Long>();
 		ArrayList<Integer> colTypes = new ArrayList<Integer>();
 		
-		//get rs and rsmd
+		//get rs, rsmd, and exec time
+		long start = System.nanoTime();
 		ResultSet rs = Database.getInstance().query(query);
+		long end = System.nanoTime();
 		ResultSetMetaData rsmd = rs.getMetaData();
+		execTime.add(end - start);
+		result.add(execTime);
 		
 		//get column names
 		for (int i = 1; i <= rsmd.getColumnCount(); i++)

@@ -127,10 +127,10 @@ public class Service {
 		
 		result = Service.presetQ(input);
 		if (result != null) {
-			for (int i = 0; i < result.size(); i++) {
+			for (int i = 1; i < result.size(); i++) {
 				ObservableList<Object> rowList = FXCollections.observableArrayList();
 				for (int j = 0; j < result.get(i).size(); j++) {
-					if (i == 0)
+					if (i == 1)
 						COLEX.add((String)result.get(i).get(j));
 					else {
 						rowList.add(result.get(i).get(j));

@@ -24,7 +24,7 @@ public class Driver extends Application{
 	public static void main(String[] args) {
 		launch(args);
 		
-		//testing
+		/*testing
 		Scanner sc = new Scanner(System.in);
 		ArrayList<ArrayList<?>> result;
 		int input;
@@ -70,6 +70,7 @@ public class Driver extends Application{
 		} while(!query.equalsIgnoreCase("quit"));
 		
 		sc.close();
+		*/
 	}
 
 	@Override
