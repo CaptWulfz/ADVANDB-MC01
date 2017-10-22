@@ -1,5 +1,7 @@
 package GUI;
 
+import java.util.ArrayList;
+
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -15,11 +17,11 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import util.Service;
 
 public class LeftSide {
 	
 	private ChoiceBox<String> QueryChoices = new ChoiceBox<String>();
-	private Button viewDB = new Button("VIEW DB");
 	private Button QueryCreate = new Button("CREATE");
 	private Button generate = new Button("GENERATE"); 
 	private Button addNewPlus = new Button("ADD NEW +");
@@ -29,36 +31,28 @@ public class LeftSide {
 	private String toBeCreated = new String(); 
 	private VBox buttonBox = new VBox();
 	private VBox left = new VBox();
-	private RightSide rightSide = new RightSide();
+	private String[] opList;
+	private RightSide rightSide;
 	
-	public LeftSide(RightSide rightSide) {
-		this.rightSide = rightSide;
-		QueryChoices.getItems().add("Empty");
+	public LeftSide(RightSide rightSide, String[] opList, String[] queryList) {
+		//QueryChoices.getItems().add("Empty");
+		QueryChoices.getItems().addAll(queryList);
 		QueryChoices.getSelectionModel().select(0);
-		QueryChoices.setMaxWidth(Double.MAX_VALUE);
+		QueryChoices.setMaxWidth(100);
 		initButtons();
 		initScrollPane();
 		initLabels();
-		
-		left.getChildren().addAll(viewDB, query, QueryChoices, QueryCreate, optimize, optimizeScroll, generate);
+		left.getChildren().addAll(query, QueryChoices, QueryCreate, optimize, optimizeScroll, generate);
 		GridPane.setConstraints(left, 0, 0);
 		left.setPadding(new Insets(10,10,10,10));
 		left.setMaxHeight(Double.MAX_VALUE);
 		left.setSpacing(10);
+		this.opList = opList;
+		this.rightSide = rightSide;
 	}
 
 	private void initButtons() {
 		//ViewDB button
-		viewDB.setAlignment(Pos.CENTER);
-		viewDB.setStyle("-fx-focus-color: transparent; "
-				            + "-fx-base: Red; "
-				            + "-fx-background-radius: 0%;"
-				            + "-fx-font-weight: bold");
-		viewDB.setPadding(new Insets(5));
-		viewDB.setMaxWidth(Double.MAX_VALUE);
-		viewDB.setOnAction(e ->  {
-			switchTablesBox();
-		});
 		
 		//QueryCreate button
 		QueryCreate.setAlignment(Pos.CENTER);
@@ -80,7 +74,9 @@ public class LeftSide {
 		generate.setPadding(new Insets(5));
 		generate.setMaxWidth(Double.MAX_VALUE);
 		generate.setOnAction(e ->  {
-			//enter shit here
+			//TODO
+			Service.executePQuery(QueryChoices.getSelectionModel().getSelectedIndex() + 1);
+			this.rightSide.CreateTableViews(Service.getCOLEX(), Service.getROWEX());
 		});
 		
 		addNewPlus.setAlignment(Pos.CENTER);
@@ -97,7 +93,7 @@ public class LeftSide {
 	
 	private void initScrollPane() {
 		optimizeScroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
-		optimizeScroll.setMinHeight(100);
+		optimizeScroll.setMinHeight(190);
 		buttonBox.getChildren().addAll(addNewPlus);
 		optimizeScroll.setContent(buttonBox);
 	}
@@ -124,7 +120,7 @@ public class LeftSide {
 		button.setPadding(new Insets(5));
 		button.setMaxWidth(Double.MAX_VALUE);
 		button.setOnAction(e ->  {
-			//enter shit here
+			buttonBox.getChildren().remove(button);
 		});
 		buttonBox.getChildren().addAll(button);
 	}
@@ -141,7 +137,11 @@ public class LeftSide {
 		window.setMinWidth(250);
 		window.setResizable(false);
 		
-		OptimizeChoices.getItems().add("Index");
+		if (!OptimizeChoices.getItems().isEmpty())
+			OptimizeChoices.getItems().clear();
+		
+		OptimizeChoices.getItems().addAll(opList);
+		
 		OptimizeChoices.setMaxWidth(Double.MAX_VALUE);
 		OptimizeChoices.getSelectionModel().select(0);
 		
@@ -186,56 +186,8 @@ public class LeftSide {
 		window.setResizable(false);
 		
 		
-		Button bookButton = new Button("Books");
-		bookButton.setMaxWidth(Double.MAX_VALUE);
-		bookButton.setOnAction(e -> {
-				rightSide.switchToBooks();
-				window.close();
-			});
-		bookButton.setMaxWidth(Double.MAX_VALUE);
-		
-		Button authorButton = new Button("Author");
-		authorButton.setMaxWidth(Double.MAX_VALUE);
-		authorButton.setOnAction(e -> {
-				rightSide.switchToAuthor();
-				window.close();
-			});
-		authorButton.setMaxWidth(Double.MAX_VALUE);
-		
-		Button loansButton = new Button("Book Loans");
-		loansButton.setMaxWidth(Double.MAX_VALUE);
-		loansButton.setOnAction(e -> {
-				rightSide.switchToLoans();
-				window.close();
-			});
-		loansButton.setMaxWidth(Double.MAX_VALUE);
-		
-		Button borrowButton = new Button("Borrower");
-		borrowButton.setMaxWidth(Double.MAX_VALUE);
-		borrowButton.setOnAction(e -> {
-				rightSide.switchToBorrow();
-				window.close();
-			});
-		borrowButton.setMaxWidth(Double.MAX_VALUE);
-		
-		Button libButton = new Button("Library Branch");
-		libButton.setMaxWidth(Double.MAX_VALUE);
-		libButton.setOnAction(e -> {
-				rightSide.switchToLibrary();
-				window.close();
-			});
-		libButton.setMaxWidth(Double.MAX_VALUE);
-		
-		Button pubButton = new Button("Publisher");
-		pubButton.setMaxWidth(Double.MAX_VALUE);
-		pubButton.setOnAction(e -> {
-				rightSide.switchToPublisher();
-				window.close();
-			});
-		pubButton.setMaxWidth(Double.MAX_VALUE);
-		
 		VBox layout = new VBox(10);
-		layout.getChildren().addAll(bookButton, authorButton, loansButton, borrowButton, libButton, pubButton);
+		layout.getChildren().addAll();
 		layout.setPadding(new Insets(10,10,10,10));
 		
 		Scene scene = new Scene(layout);

@@ -2,6 +2,6 @@
 <classpath>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="lib" path="C:/Users/Anj/Documents/GitHub/ADVANDB-MC01/Source Code/ADVANDB MC01/jarlib/mysql-connector-java-5.0.8-bin.jar"/>
+	<classpathentry kind="lib" path="jarlib/mysql-connector-java-5.0.8-bin.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

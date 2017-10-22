@@ -23,7 +23,7 @@ public class StageMakerView {
 		primaryStage.setTitle("MCO1");
 		primaryStage.setResizable(false);
 		
-		grid.setPrefSize(575, 350); 
+		grid.setPrefSize(1000, 400); 
 		grid.getChildren().addAll(left.getLeftSide(), right.getRightSide());
 		grid.setPadding(new Insets(10,10,10,10));
 		grid.setVgap(10);
@@ -31,7 +31,7 @@ public class StageMakerView {
 		
 		MainPane.getChildren().addAll(grid);
 		MainPane.setAlignment(Pos.CENTER);
-		MainScene = new Scene (MainPane, 575, 350);
+		MainScene = new Scene (MainPane, 1000, 400);
 		
 		primaryStage.setScene(MainScene);
 		primaryStage.show();

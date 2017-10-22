@@ -52,4 +52,8 @@ public class Query {
 		
 		return result;
 	}
+	
+	public void executeQuery(String query) {
+		Database.getInstance().query(query);
+	}
 }

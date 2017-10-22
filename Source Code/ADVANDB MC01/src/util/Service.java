@@ -3,7 +3,14 @@ package util;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 public class Service {
+	
+	private static ArrayList<String> COLEX = new ArrayList<String>();
+	private static ArrayList<ObservableList<Object>> ROWEX = new ArrayList<ObservableList<Object>>();
+	
 	public static String[]
 		viewDBQs = { //ViewDB Queries
 			"SELECT * FROM book;",
@@ -52,7 +59,8 @@ public class Service {
 			"SELECT DISTINCT p.PublisherName, lb.BranchAddress"
 			+ " FROM publisher p, library_branch lb, book_loans bl, book b"
 			+ " WHERE lb.BranchAddress = 'New York' AND bl.BookID = b.BookID AND bl.BranchID = lb.BranchID AND b.PublisherName = p.PublisherName;"
-		};
+		},
+		optimizationList = {"Index", "View", "Temp. Table", "Join Tables"};
 	
 	//choose from viewDB queries (1-6), 1-based index
 	public static ArrayList<ArrayList<?>> viewDBQ(int n) {
@@ -91,6 +99,58 @@ public class Service {
 			e.printStackTrace();
 		}
 		return result;
+	}
+	
+	//create index
+	public static void createIndex(String indexName, String table, String column) {
+		String query = "CREATE INDEX " + indexName + " ON " + table + " (" + column + ")";
+		Query.getInstance().executeQuery(query);
+	}
+	
+	//drop index
+	public static void dropIndex(String indexName, String table) {
+		String query = "DROP INDEX " + indexName + " ON " + table;
+		Query.getInstance().executeQuery(query);
+	}
+	
+	public static String[] getPresetQ(){
+		return presetQs;
+	}
+	
+	public static void executePQuery(int input) {
+		ArrayList<ArrayList<?>> result;
+		
+		if (!COLEX.isEmpty())
+			COLEX.clear();
+		if (!ROWEX.isEmpty())
+			ROWEX.clear();
+		
+		result = Service.presetQ(input);
+		if (result != null) {
+			for (int i = 0; i < result.size(); i++) {
+				ObservableList<Object> rowList = FXCollections.observableArrayList();
+				for (int j = 0; j < result.get(i).size(); j++) {
+					if (i == 0)
+						COLEX.add((String)result.get(i).get(j));
+					else {
+						rowList.add(result.get(i).get(j));
+					}
+				}
+				System.out.println(rowList);
+				if (!rowList.isEmpty()) {
+					ROWEX.add(FXCollections.observableArrayList(rowList));
+					rowList.clear();
+				}		
+			}
+		}
+	}
+	
+	public static ArrayList<String> getCOLEX(){
+		return COLEX;
+	}
+	
+	public static ArrayList<ObservableList<Object>> getROWEX(){
+		return ROWEX;
 	}
 	
 }
