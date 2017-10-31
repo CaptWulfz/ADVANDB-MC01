@@ -10,6 +10,7 @@ public class Service {
 	
 	private static ArrayList<String> COLEX = new ArrayList<String>();
 	private static ArrayList<ObservableList<Object>> ROWEX = new ArrayList<ObservableList<Object>>();
+	private static String time = "0";
 	
 	public static String[]
 		viewDBQs = { //ViewDB Queries
@@ -103,13 +104,14 @@ public class Service {
 	
 	//create index
 	public static void createIndex(String indexName, String table, String column) {
-		String query = "CREATE INDEX " + indexName + " ON " + table + " (" + column + ")";
+		String query = "CREATE INDEX " + indexName + " ON " + table + "(" + column + ");";
+		System.out.println(query);
 		Query.getInstance().executeQuery(query);
 	}
 	
 	//drop index
 	public static void dropIndex(String indexName, String table) {
-		String query = "DROP INDEX " + indexName + " ON " + table;
+		String query = "DROP INDEX " + indexName + " ON " + table + ";";
 		Query.getInstance().executeQuery(query);
 	}
 	
@@ -127,10 +129,14 @@ public class Service {
 		
 		result = Service.presetQ(input);
 		if (result != null) {
-			for (int i = 1; i < result.size(); i++) {
+			for (int i = 0; i < result.size(); i++) {
 				ObservableList<Object> rowList = FXCollections.observableArrayList();
 				for (int j = 0; j < result.get(i).size(); j++) {
-					if (i == 1)
+					if (i == 0) {
+						time = (result.get(i).get(j)).toString();
+						//System.out.println(time);
+					}
+					else if (i == 1)
 						COLEX.add((String)result.get(i).get(j));
 					else {
 						rowList.add(result.get(i).get(j));
@@ -151,6 +157,10 @@ public class Service {
 	
 	public static ArrayList<ObservableList<Object>> getROWEX(){
 		return ROWEX;
+	}
+	
+	public static String getTime() {
+		return time;
 	}
 	
 }

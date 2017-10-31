@@ -24,7 +24,8 @@ public class Driver extends Application{
 	public static void main(String[] args) {
 		launch(args);
 		
-		/*testing
+		//testing
+		/*
 		Scanner sc = new Scanner(System.in);
 		ArrayList<ArrayList<?>> result;
 		int input;
@@ -76,7 +77,7 @@ public class Driver extends Application{
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		RightSide right = new RightSide();
-		LeftSide left = new LeftSide(right, optimizationList, queryList);
+		LeftSide left = new LeftSide(right, queryList);
 		StageMakerView view = new StageMakerView(primaryStage, left, right);
 		
 		/*

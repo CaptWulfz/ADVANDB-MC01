@@ -2,6 +2,7 @@ package util;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -9,7 +10,7 @@ import java.sql.Statement;
 public class Database {
 	private final String directory = "jdbc:mysql://localhost:3306/booksdb";
 	private final String user = "root";
-	private final String pass = "1234";
+	private final String pass = "";
 	
 	private static Database instance = new Database();
 	
@@ -41,6 +42,15 @@ public class Database {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	public void executeQuery(String query) {
+		try {
+			PreparedStatement ps = con.prepareStatement(query);
+			ps.execute();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	//this method needs to be called after every query
