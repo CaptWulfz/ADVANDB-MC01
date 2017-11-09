@@ -19,7 +19,7 @@ public class Driver extends Application{
 		 "List all books that were borrowed more than once from the Silver Branch",
 		 "List all borrowers who borrowed from the Silver Branch",
 		 "List all book loans that were returned Exactly on the due date",
-		 "List all publishers where their authored books are available in the branches located in New York"};
+		 "List all publishers where their published books are available in the branches located in New York"};
 	
 	public static void main(String[] args) {
 		launch(args);

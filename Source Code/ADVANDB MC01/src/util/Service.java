@@ -61,7 +61,100 @@ public class Service {
 			+ " FROM publisher p, library_branch lb, book_loans bl, book b"
 			+ " WHERE lb.BranchAddress = 'New York' AND bl.BookID = b.BookID AND bl.BranchID = lb.BranchID AND b.PublisherName = p.PublisherName;"
 		},
-		optimizationList = {"Index", "View", "Temp. Table", "Join Tables"};
+		
+		optimizedQ = {
+				//1 table
+				"SELECT Title, PublisherName FROM PublisherHuff ORDER BY Title;",
+				
+				"SELECT PublisherName, Address FROM AddressLA  ORDER BY 1 asc;",
+				
+				//2 tables
+				"SELECT b.BookID, b.Title, b.PublisherName, a.AuthorLastName, a.AuthorFirstName"
+			  + "FROM book b, AuthorStonefeather a"
+			  + "WHERE b.BookID = a.BookID",
+			  
+			  	"SELECT lb.BranchName, COUNT(db.*)"
+			  + "FROM  library_branch lb, DateOutBetween db"
+			  + "WHERE lb.BranchID = db.BranchID",
+			  
+			  	//3 tables
+			  	"SELECT b.Title"
+			  	+ "FROM book b, book_loans bl, SilverBranch sb"
+			  	+ "WHERE b.BookID = bl.BookID AND bl.BranchID = sb.BranchID"
+			  	+ "GROUP BY b.BookID"
+			  	+ "HAVING COUNT(b.BookID) > 1",
+			  	
+			  	"SELECT DISTINCT br.BorrowerLName, br.CardNo"
+  			  + " FROM booksdb.borrower br, SilverBranch sb, booksdb.book_loans bl"
+			  + " WHERE br.CardNo = bl.CardNo AND bl.BranchID = lb.BranchID ",
+						
+			  
+			  	//4 tables
+			  	"SELECT br.BorrowerLName, br.BorrowerFName, b.BookID, b.Title, ba.AuthoerLastName, ba.AuthorFirstName, dd.DueDate, dd.DateReturned"
+			  	+ "FROM book b, book_authors ba, borrower br, DueDateOnTime dd"
+			  	+ "WHERE b.BookID = dd.BookID AND b.bookID = ba.BookID AND ba.BookID = dd.BookID AND dd.CardNo = br.CardNo"
+			  	+ "ORDER BY BorrowerLName ASC, Title ASC;",
+			  	
+			  	"SELECT DISTINCE p.PublisherName, n.BranchAddress"
+			  	+ "FROM publisher p, NewYorkBranch n, book_loans bl, book b"
+			  	+ "WHERE n.BookID = b.BookID AND n.BranchID = lb.BranchID AND b.PublisherName = p.PublisherName;"
+			
+			
+		},
+		
+		viewQ = {
+				
+				//1
+				"CREATE VIEW PublisherHuff AS"
+			  + "SELECT *"
+			  + "FROM book"
+			  + "WHERE PublisherName = \"Huffington Post\"",
+				  
+			    //2
+			    "CREATE VIEW AddressLA AS"
+			  + "SELECT PublisherName"
+			  + "FROM publisher"
+			  + "WHERE Address = \"Los Angeles\"",
+				
+			    //3
+				"CREATE VIEW AuthorStonefeather AS"
+			  + "SELECT *"
+			  + "FROM book_authors"
+			  + "WHERE AuthorLastName = \"Stonefeather\"",
+			  	
+			    //4
+			    "CREATE VIEW DateOutBetween AS"
+			  + "SELECT *"
+			  + "FROM book_loans"
+			  + "WHERE DateOut BETWEEN \"01/01/2006\" AND \"31/12/2011\"",
+			 
+			    //5
+			    "CREATE VIEW SilverBranch AS"
+		      + "SELECT *"
+		      + "FROM library_branch"
+		      + "WHERE BranchName = \"Silver\"",
+		      
+		      	//6
+		      	"CREATE VIEW SilverBranch AS"
+		      + "SELECT *"
+		      + "FROM library_branch"
+		      + "WHERE BranchName = \"Silver\"",
+		    
+		       //7
+		       "CREATE VIEW DueDateOnTime AS"
+		     + "SELECT *"
+		     + "FROM book_loans"
+		     + "WHERE DueDate = DateReturned",
+		    
+		      //8
+		       "CREATE VIEW NewYorkBranch AS"
+		     + "SELECT *"
+		     + "FROM library_branch"
+		     + "WHERE BranchAddress = \"New York\""
+		
+		};
+	
+	
 	
 	//choose from viewDB queries (1-6), 1-based index
 	public static ArrayList<ArrayList<?>> viewDBQ(int n) {

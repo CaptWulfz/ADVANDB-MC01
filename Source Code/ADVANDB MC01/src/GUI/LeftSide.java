@@ -169,9 +169,9 @@ public class LeftSide {
 			String indexName = IndexQueryField.getText(),
 				   table = TableBox.getValue();
 			if (!IndexQueryField.getText().equals("")) {
-				//System.out.println("GAGo TT^TTnm");
 					Service.createIndex(IndexQueryField.getText(), TableBox.getValue(), columnBox.getValue());
 					addNewOpt(indexName, table);
+					IndexQueryField.clear();
 			}
 			window.close();
 		});
@@ -274,6 +274,9 @@ public class LeftSide {
 				columns.add("Address");
 				columns.add("Phone");
 			}
+			
+			if (!columnBox.getItems().isEmpty())
+				columnBox.getItems().clear();
 			
 			columnBox.getItems().addAll(columns);
 			//XXX
