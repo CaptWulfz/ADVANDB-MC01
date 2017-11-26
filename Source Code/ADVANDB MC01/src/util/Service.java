@@ -12,6 +12,8 @@ public class Service {
 	private static ArrayList<ObservableList<Object>> ROWEX = new ArrayList<ObservableList<Object>>();
 	private static String time = "0";
 	
+	private static boolean views = false;
+	
 	public static String[]
 		viewDBQs = { //ViewDB Queries
 			"SELECT * FROM book;",
@@ -70,19 +72,19 @@ public class Service {
 				
 				//2 tables
 				"SELECT b.BookID, b.Title, b.PublisherName, a.AuthorLastName, a.AuthorFirstName"
-			  + "FROM book b, AuthorStonefeather a"
-			  + "WHERE b.BookID = a.BookID",
+			  + " FROM book b, AuthorStonefeather a"
+			  + " WHERE b.BookID = a.BookID",
 			  
 			  	"SELECT lb.BranchName, COUNT(db.*)"
-			  + "FROM  library_branch lb, DateOutBetween db"
-			  + "WHERE lb.BranchID = db.BranchID",
+			  + " FROM  library_branch lb, DateOutBetween db"
+			  + " WHERE lb.BranchID = db.BranchID",
 			  
 			  	//3 tables
 			  	"SELECT b.Title"
-			  	+ "FROM book b, book_loans bl, SilverBranch sb"
-			  	+ "WHERE b.BookID = bl.BookID AND bl.BranchID = sb.BranchID"
-			  	+ "GROUP BY b.BookID"
-			  	+ "HAVING COUNT(b.BookID) > 1",
+			  	+ " FROM book b, book_loans bl, SilverBranch sb"
+			  	+ " WHERE b.BookID = bl.BookID AND bl.BranchID = sb.BranchID"
+			  	+ " GROUP BY b.BookID"
+			  	+ " HAVING COUNT(b.BookID) > 1",
 			  	
 			  	"SELECT DISTINCT br.BorrowerLName, br.CardNo"
   			  + " FROM booksdb.borrower br, SilverBranch sb, booksdb.book_loans bl"
@@ -91,13 +93,13 @@ public class Service {
 			  
 			  	//4 tables
 			  	"SELECT br.BorrowerLName, br.BorrowerFName, b.BookID, b.Title, ba.AuthoerLastName, ba.AuthorFirstName, dd.DueDate, dd.DateReturned"
-			  	+ "FROM book b, book_authors ba, borrower br, DueDateOnTime dd"
-			  	+ "WHERE b.BookID = dd.BookID AND b.bookID = ba.BookID AND ba.BookID = dd.BookID AND dd.CardNo = br.CardNo"
-			  	+ "ORDER BY BorrowerLName ASC, Title ASC;",
+			  	+ " FROM book b, book_authors ba, borrower br, DueDateOnTime dd"
+			  	+ " WHERE b.BookID = dd.BookID AND b.bookID = ba.BookID AND ba.BookID = dd.BookID AND dd.CardNo = br.CardNo"
+			  	+ " ORDER BY BorrowerLName ASC, Title ASC;",
 			  	
 			  	"SELECT DISTINCE p.PublisherName, n.BranchAddress"
-			  	+ "FROM publisher p, NewYorkBranch n, book_loans bl, book b"
-			  	+ "WHERE n.BookID = b.BookID AND n.BranchID = lb.BranchID AND b.PublisherName = p.PublisherName;"
+			  	+ " FROM publisher p, NewYorkBranch n, book_loans bl, book b"
+			  	+ " WHERE n.BookID = b.BookID AND n.BranchID = lb.BranchID AND b.PublisherName = p.PublisherName;"
 			
 			
 		},
@@ -106,53 +108,61 @@ public class Service {
 				
 				//1
 				"CREATE VIEW PublisherHuff AS"
-			  + "SELECT *"
-			  + "FROM book"
-			  + "WHERE PublisherName = \"Huffington Post\"",
+			  + " SELECT *"
+			  + " FROM book"
+			  + " WHERE PublisherName = \"Huffington Post\"",
 				  
 			    //2
 			    "CREATE VIEW AddressLA AS"
-			  + "SELECT PublisherName"
-			  + "FROM publisher"
-			  + "WHERE Address = \"Los Angeles\"",
+			  + " SELECT PublisherName"
+			  + " FROM publisher"
+			  + " WHERE Address = \"Los Angeles\"",
 				
 			    //3
 				"CREATE VIEW AuthorStonefeather AS"
-			  + "SELECT *"
-			  + "FROM book_authors"
-			  + "WHERE AuthorLastName = \"Stonefeather\"",
+			  + " SELECT *"
+			  + " FROM book_authors"
+			  + " WHERE AuthorLastName = \"Stonefeather\"",
 			  	
 			    //4
 			    "CREATE VIEW DateOutBetween AS"
-			  + "SELECT *"
-			  + "FROM book_loans"
-			  + "WHERE DateOut BETWEEN \"01/01/2006\" AND \"31/12/2011\"",
+			  + " SELECT *"
+			  + " FROM book_loans"
+			  + " WHERE DateOut BETWEEN \"01/01/2006\" AND \"31/12/2011\"",
 			 
 			    //5
 			    "CREATE VIEW SilverBranch AS"
-		      + "SELECT *"
-		      + "FROM library_branch"
-		      + "WHERE BranchName = \"Silver\"",
+		      + " SELECT *"
+		      + " FROM library_branch"
+		      + " WHERE BranchName = \"Silver\"",
 		      
-		      	//6
+		      /*	//6
 		      	"CREATE VIEW SilverBranch AS"
 		      + "SELECT *"
 		      + "FROM library_branch"
-		      + "WHERE BranchName = \"Silver\"",
+		      + "WHERE BranchName = \"Silver\"",*/
 		    
 		       //7
 		       "CREATE VIEW DueDateOnTime AS"
-		     + "SELECT *"
-		     + "FROM book_loans"
-		     + "WHERE DueDate = DateReturned",
+		     + " SELECT *"
+		     + " FROM book_loans"
+		     + " WHERE DueDate = DateReturned",
 		    
 		      //8
 		       "CREATE VIEW NewYorkBranch AS"
-		     + "SELECT *"
-		     + "FROM library_branch"
-		     + "WHERE BranchAddress = \"New York\""
+		     + " SELECT *"
+		     + " FROM library_branch"
+		     + " WHERE BranchAddress = \"New York\""
 		
-		};
+		},
+		
+		dropQ = {"Drop View PublisherHuff;",
+				"Drop View AddressLA",
+				"Drop View AuthorStonefeather",
+				"Drop View DateOutBetween",
+				"Drop View SilverBranch",
+				"Drop View DueDateOnTime",
+				"Drop View NewYorkBranch"};
 	
 	
 	
@@ -176,6 +186,19 @@ public class Service {
 		ArrayList<ArrayList<?>> result = new ArrayList<ArrayList<?>>();
 		try {
 			result = Query.getInstance().getRS(presetQs[n - 1]);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	public static ArrayList<ArrayList<?>> optimizedQ(int n) {
+		if (n < 1 || n > 8)
+			return null;
+		ArrayList<ArrayList<?>> result = new ArrayList<ArrayList<?>>();
+		try {
+			result = Query.getInstance().getRS(optimizedQ[n - 1]);
+			System.out.println(optimizedQ[n-1]);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -212,6 +235,20 @@ public class Service {
 		return presetQs;
 	}
 	
+	public static void executeViewQ() {
+		for (int i = 0; i < viewQ.length; i++) {
+			Database.getInstance().executeQuery(viewQ[i]);
+		}
+		views = true;
+	}
+	
+	public static void executeDropQ() {
+		for (int i = 0; i < dropQ.length; i++) {
+			Database.getInstance().executeQuery(dropQ[i]);
+		}
+		views = false;
+	}
+	
 	public static void executePQuery(int input) {
 		ArrayList<ArrayList<?>> result;
 		
@@ -220,7 +257,11 @@ public class Service {
 		if (!ROWEX.isEmpty())
 			ROWEX.clear();
 		
-		result = Service.presetQ(input);
+		if (!views)
+			result = Service.presetQ(input);
+		else
+			result = Service.optimizedQ(input);
+		
 		if (result != null) {
 			for (int i = 0; i < result.size(); i++) {
 				ObservableList<Object> rowList = FXCollections.observableArrayList();

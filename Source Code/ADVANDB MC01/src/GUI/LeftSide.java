@@ -141,7 +141,7 @@ public class LeftSide {
 	private Button viewButton = new Button("View");
 	private Button cancelButton = new Button("Cancel");
 	private Button okButton = new Button("Ok");
-	private TextField ViewQueryField = new TextField();
+	//XXX private TextField ViewQueryField = new TextField();
 	private TextField IndexQueryField = new TextField();
 	
 	public void OptimizeBox() {
@@ -151,7 +151,7 @@ public class LeftSide {
 		window.setMinWidth(285);
 		window.setResizable(false);
 		
-		ViewQueryField.setMaxWidth(Double.MAX_VALUE);
+		//XXX ViewQueryField.setMaxWidth(Double.MAX_VALUE);
 		
 		Label label = new Label();
 		label.setFont(Font.font("Arial", FontWeight.BLACK, 11));
@@ -194,15 +194,29 @@ public class LeftSide {
 	}
 	
 	private HBox descViewH = new HBox();
-	private VBox descViewV = new VBox();;
+	private VBox descViewV = new VBox();
 	private ChoiceBox<String> TableBox = new ChoiceBox<String>();
 	private ChoiceBox<String> columnBox = new ChoiceBox<String>();
-	
+	//XXX
+	private Button ViewButton = new Button("ADD VIEWS");
 	
 	private void initOptButtons(){
 		
 		if (!TableBox.getItems().isEmpty())
 			TableBox.getItems().clear();
+		
+		//XXX
+		ViewButton.setMaxWidth(Double.MAX_VALUE);
+		ViewButton.setOnAction(e -> {
+			if(ViewButton.getText() == "ADD VIEWS"){
+				ViewButton.setText("DISCARD VIEWS");
+				Service.executeViewQ();
+			}
+			else {
+				ViewButton.setText("ADD VIEWS");
+				Service.executeDropQ();
+			}
+		});
 		
 		TableBox.getItems().addAll("book", "book_authors", "book_loans", "borrower", "library_branch", "publisher");
 		TableBox.setMaxWidth(Double.MAX_VALUE);
@@ -282,9 +296,9 @@ public class LeftSide {
 			//XXX
 		});
 		
-		Label labelEQ = new Label();
-		labelEQ.setFont(Font.font("Arial", FontWeight.BLACK, 11));
-		labelEQ.setText("Enter Query:");
+		//XXX Label labelEQ = new Label();
+		//XXX labelEQ.setFont(Font.font("Arial", FontWeight.BLACK, 11));
+		//XXX labelEQ.setText("Enter Query:");
 		
 		descViewH.setPadding(new Insets(10,10,10,10));
 		if (descViewH.getChildren().isEmpty())
@@ -305,7 +319,9 @@ public class LeftSide {
 		viewButton.setOnAction(e -> {
 				choice = "View";
 				descViewV.getChildren().clear();
-				descViewV.getChildren().addAll(labelEQ, ViewQueryField);
+				//XXX descViewV.getChildren().addAll(labelEQ, ViewQueryField);
+				//XXX
+				descViewV.getChildren().addAll(ViewButton);
 				descScroll.setContent(descViewV);
 			});
 		viewButton.setStyle("-fx-focus-color: transparent; "

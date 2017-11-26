@@ -13,24 +13,6 @@ public class QueryManager {
 		db = Database.getInstance();
 	}
 	
-	public void addOptimization(String type) {
-		
-		if (type.equalsIgnoreCase("Index")) {
-			
-			
-		} else if (type.equalsIgnoreCase("View")) {
-			
-			
-		} else if (type.equalsIgnoreCase("Temp. Table")) {
-			
-			
-		} else if (type.equalsIgnoreCase("Join Tables")) {
-			
-			
-		}
-		
-	}
-	
 	public void dropOptimization(String type) {
 		
 		
