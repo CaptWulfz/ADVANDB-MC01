@@ -75,7 +75,7 @@ public class Service {
 			  + " FROM book b, AuthorStonefeather a"
 			  + " WHERE b.BookID = a.BookID",
 			  
-			  	"SELECT lb.BranchName, COUNT(db.*)"
+			  	"SELECT lb.BranchName, COUNT(db.BranchID)"
 			  + " FROM  library_branch lb, DateOutBetween db"
 			  + " WHERE lb.BranchID = db.BranchID",
 			  
@@ -88,18 +88,18 @@ public class Service {
 			  	
 			  	"SELECT DISTINCT br.BorrowerLName, br.CardNo"
   			  + " FROM booksdb.borrower br, SilverBranch sb, booksdb.book_loans bl"
-			  + " WHERE br.CardNo = bl.CardNo AND bl.BranchID = lb.BranchID ",
+			  + " WHERE br.CardNo = bl.CardNo AND bl.BranchID = sb.BranchID ",
 						
 			  
 			  	//4 tables
-			  	"SELECT br.BorrowerLName, br.BorrowerFName, b.BookID, b.Title, ba.AuthoerLastName, ba.AuthorFirstName, dd.DueDate, dd.DateReturned"
+			  	"SELECT br.BorrowerLName, br.BorrowerFName, b.BookID, b.Title, ba.AuthorLastName, ba.AuthorFirstName, dd.DueDate, dd.DateReturned"
 			  	+ " FROM book b, book_authors ba, borrower br, DueDateOnTime dd"
 			  	+ " WHERE b.BookID = dd.BookID AND b.bookID = ba.BookID AND ba.BookID = dd.BookID AND dd.CardNo = br.CardNo"
 			  	+ " ORDER BY BorrowerLName ASC, Title ASC;",
 			  	
-			  	"SELECT DISTINCE p.PublisherName, n.BranchAddress"
+			  	"SELECT DISTINCT p.PublisherName, n.BranchAddress"
 			  	+ " FROM publisher p, NewYorkBranch n, book_loans bl, book b"
-			  	+ " WHERE n.BookID = b.BookID AND n.BranchID = lb.BranchID AND b.PublisherName = p.PublisherName;"
+			  	+ " WHERE bl.BookID = b.BookID AND n.BranchID = bl.BranchID AND b.PublisherName = p.PublisherName;"
 			
 			
 		},
@@ -114,7 +114,7 @@ public class Service {
 				  
 			    //2
 			    "CREATE VIEW AddressLA AS"
-			  + " SELECT PublisherName"
+			  + " SELECT *"
 			  + " FROM publisher"
 			  + " WHERE Address = \"Los Angeles\"",
 				
